@@ -2,71 +2,224 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Just For You 💗</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Just For You 💗</title>
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', 'Comic Sans MS', sans-serif;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
 }
 
-body {
-    height: 100vh;
-    overflow: hidden;
-    background: linear-gradient(135deg, #ffd6e8, #ffeaf4, #e8f8ff);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
+body{
+    height:100vh;
+    overflow:hidden;
+    background:linear-gradient(135deg,#ffd1e8,#ffeef6,#fff);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    text-align:center;
+    position:relative;
 }
 
-/* ===== CARD ===== */
-.card {
-    background: rgba(255,255,255,0.9);
-    padding: 35px;
-    border-radius: 25px;
-    text-align: center;
-    max-width: 420px;
-    width: 90%;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-    animation: pop 1s ease;
-    z-index: 10;
+/* Floating hearts background */
+.bg-heart{
+    position:absolute;
+    width:20px;
+    height:20px;
+    background:rgba(255,105,180,0.35);
+    transform:rotate(45deg);
+    animation:floatUp linear infinite;
 }
 
-.hidden { display: none; }
-
-h1 {
-    color: #ff5fa2;
-    margin-bottom: 15px;
+.bg-heart::before,
+.bg-heart::after{
+    content:'';
+    position:absolute;
+    width:20px;
+    height:20px;
+    background:inherit;
+    border-radius:50%;
 }
 
-p {
-    font-size: 17px;
-    color: #444;
-    line-height: 1.7;
+.bg-heart::before{top:-10px;left:0;}
+.bg-heart::after{left:-10px;top:0;}
+
+@keyframes floatUp{
+    0%{transform:translateY(100vh) rotate(45deg);opacity:0;}
+    10%{opacity:1;}
+    100%{transform:translateY(-120vh) rotate(45deg);opacity:0;}
 }
 
-/* ===== BUTTON ===== */
-button {
-    margin-top: 25px;
-    padding: 12px 30px;
-    border: none;
-    border-radius: 30px;
-    background: linear-gradient(135deg, #ff7eb3, #ff4f81);
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-    transition: transform 0.2s;
+/* Card */
+.card{
+    background:rgba(255,255,255,0.88);
+    padding:35px;
+    border-radius:28px;
+    max-width:360px;
+    box-shadow:0 25px 45px rgba(0,0,0,0.15);
+    z-index:10;
+    animation:pop 1s ease;
 }
 
-button:hover { transform: scale(1.05); }
+@keyframes pop{
+    from{transform:scale(0.7);opacity:0;}
+    to{transform:scale(1);opacity:1;}
+}
 
-/* ===== HEART BUBBLES ===== */
-.bubble-heart {
+h1{
+    color:#ff5fa2;
+    margin-bottom:15px;
+    font-size:26px;
+}
+
+p{
+    color:#555;
+    font-size:17px;
+    line-height:1.6;
+}
+
+/* Read button */
+button{
+    margin-top:20px;
+    padding:12px 28px;
+    border:none;
+    border-radius:30px;
+    background:#ff5fa2;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    display:none;
+    box-shadow:0 10px 20px rgba(255,95,162,0.4);
+}
+
+button:hover{
+    background:#ff3f8e;
+}
+
+/* Tap hearts */
+.tap-heart{
+    position:absolute;
+    width:18px;
+    height:18px;
+    background:#ff5fa2;
+    transform:rotate(45deg);
+    animation:tapFloat 1.2s ease forwards;
+}
+
+.tap-heart::before,
+.tap-heart::after{
+    content:'';
+    position:absolute;
+    width:18px;
+    height:18px;
+    background:inherit;
+    border-radius:50%;
+}
+
+.tap-heart::before{top:-9px;}
+.tap-heart::after{left:-9px;}
+
+@keyframes tapFloat{
+    0%{transform:scale(0.5) rotate(45deg);opacity:1;}
+    100%{transform:translateY(-80px) scale(1.5) rotate(45deg);opacity:0;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="card" id="intro">
+    <h1>Hello my favourite person 💓</h1>
+    <p>
+        Before you read my special letter,<br>
+        you can try to tap.<br><br>
+        A heart will appear on your cellphone / laptop screen 😊💖
+    </p>
+    <button id="readBtn">Read 💌</button>
+</div>
+
+<div class="card" id="letter" style="display:none;">
+    <h1>This is for you 💗</h1>
+    <p id="text"></p>
+</div>
+
+<script>
+/* Background hearts */
+function createBgHeart(){
+    const h=document.createElement('div');
+    h.className='bg-heart';
+    h.style.left=Math.random()*100+'vw';
+    h.style.animationDuration=(8+Math.random()*6)+'s';
+    h.style.width=h.style.height=(14+Math.random()*14)+'px';
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),15000);
+}
+setInterval(createBgHeart,500);
+
+/* Tap heart interaction */
+let tapped=false;
+document.addEventListener('click',(e)=>{
+    const heart=document.createElement('div');
+    heart.className='tap-heart';
+    heart.style.left=e.clientX+'px';
+    heart.style.top=e.clientY+'px';
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),1200);
+
+    if(!tapped){
+        tapped=true;
+        document.getElementById('readBtn').style.display='inline-block';
+    }
+});
+
+/* Letter typing effect */
+const sentences=[
+"This is for you. Yeah, just for you.",
+"Why?",
+"Because you're the only one in this world for me 💗",
+"",
+"Thanks for what you have done for me.",
+"I hope you really understand my feelings after you saw this letter.",
+"",
+"I'm gonna work harder and become a better, successful person.",
+"Because my current dream is simple.",
+"I want to make you smile.",
+"I want to make you happy.",
+"And I want to spend my lifetime future with you.",
+"",
+"Terimakasih sudah membacanya sampai akhir.",
+"Semoga kamu suka 💗💖"
+];
+
+let index=0,char=0;
+const textEl=document.getElementById('text');
+
+function typeSentence(){
+    if(index>=sentences.length) return;
+    if(char<sentences[index].length){
+        textEl.innerHTML+=sentences[index].charAt(char);
+        char++;
+        setTimeout(typeSentence,45);
+    }else{
+        textEl.innerHTML+='<br><br>';
+        index++;
+        char=0;
+        setTimeout(typeSentence,600);
+    }
+}
+
+document.getElementById('readBtn').onclick=()=>{
+    document.getElementById('intro').style.display='none';
+    document.getElementById('letter').style.display='block';
+    typeSentence();
+};
+</script>
+
+</body>
+</html>.bubble-heart {
     position: absolute;
     bottom: -40px;
     font-size: 22px;

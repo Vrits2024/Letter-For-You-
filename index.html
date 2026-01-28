@@ -211,6 +211,151 @@ nextBtn.onclick = ()=>{
 </script>
 
 </body>
+</html>.card{
+    display:none;
+    background:rgba(255,255,255,0.9);
+    padding:35px;
+    border-radius:25px;
+    width:85%;
+    max-width:420px;
+    text-align:center;
+    box-shadow:0 20px 40px rgba(0,0,0,0.15);
+    z-index:6;
+    animation:pop 1s ease;
+}
+
+@keyframes pop{
+    from{transform:scale(0.6);opacity:0;}
+    to{transform:scale(1);opacity:1;}
+}
+
+.card h1{
+    color:#ff5fa2;
+    margin-bottom:15px;
+}
+
+.card p{
+    font-size:17px;
+    color:#444;
+    line-height:1.6;
+    min-height:130px;
+}
+
+/* 🔘 Button */
+button{
+    margin-top:20px;
+    padding:12px 28px;
+    border:none;
+    border-radius:30px;
+    background:#ff5fa2;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    box-shadow:0 8px 20px rgba(255,95,162,0.4);
+    transition:0.3s;
+}
+
+button:hover{
+    transform:scale(1.05);
+    background:#ff3f91;
+}
+</style>
+</head>
+
+<body>
+
+<div class="start-text" id="startText">
+    Hello my favourite person 😊💖<br><br>
+    Tap the screen 💗
+</div>
+
+<div class="card" id="card">
+    <h1>💌 This is for you!</h1>
+    <p id="message"></p>
+    <button id="nextBtn">Next 💗</button>
+</div>
+
+<script>
+/* 🌸 Background floating hearts */
+const bgHearts = ["💗","💖","💕"];
+setInterval(()=>{
+    const h = document.createElement("div");
+    h.className = "bg-heart";
+    h.innerText = bgHearts[Math.floor(Math.random()*bgHearts.length)];
+    h.style.left = Math.random()*100 + "vw";
+    h.style.animationDuration = (6 + Math.random()*6) + "s";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),12000);
+},600);
+
+/* 💌 Main logic */
+const tapHearts = ["💗","💖","💘","💕"];
+let readShown = false;
+let messageIndex = 0;
+
+const messages = [
+"This is for you. Yes… just for you. 💗<br><br>Why?<br>Because somehow, in this world, you became the only one who truly matters to me.",
+"Thank you for everything you’ve done for me. Even the things you might not realize.<br><br>I hope after reading this, you can understand my feelings a little better.",
+"I'm working hard to become a better and more successful person.<br><br>Because right now, my dream is simple.",
+"I want to make you smile. I want to make you happy.<br><br>And if destiny allows… I want to spend my future, my lifetime, with you. 💗💖<br><br>Thank you for reading this until the end."
+];
+
+const startText = document.getElementById("startText");
+const card = document.getElementById("card");
+const messageEl = document.getElementById("message");
+const nextBtn = document.getElementById("nextBtn");
+
+/* 💗 Tap effect + Read button once */
+document.body.addEventListener("click", e=>{
+    const heart = document.createElement("div");
+    heart.className = "tap-heart";
+    heart.innerText = tapHearts[Math.floor(Math.random()*tapHearts.length)];
+    heart.style.left = e.clientX + "px";
+    heart.style.top = e.clientY + "px";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),1400);
+
+    if(!readShown){
+        readShown = true;
+        const readBtn = document.createElement("button");
+        readBtn.innerText = "Read 💌";
+        readBtn.onclick = ()=>{
+            startText.style.display = "none";
+            card.style.display = "block";
+            typeMessage(messages[0]);
+        };
+        startText.appendChild(document.createElement("br"));
+        startText.appendChild(readBtn);
+    }
+});
+
+/* ✨ Typewriter effect */
+function typeMessage(text){
+    messageEl.innerHTML = "";
+    let i = 0;
+    const speed = 35;
+    const interval = setInterval(()=>{
+        messageEl.innerHTML += text.charAt(i);
+        i++;
+        if(i >= text.length) clearInterval(interval);
+    }, speed);
+}
+
+/* 💖 Next message */
+nextBtn.onclick = ()=>{
+    messageIndex++;
+    if(messageIndex < messages.length){
+        typeMessage(messages[messageIndex]);
+        if(messageIndex === messages.length-1){
+            nextBtn.innerText = "💖";
+        }
+    }else{
+        nextBtn.style.display = "none";
+    }
+};
+</script>
+
+</body>
 </html>
 /* Button */
 button{

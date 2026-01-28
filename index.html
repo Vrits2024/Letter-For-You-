@@ -16,14 +16,14 @@
 body {
     height: 100vh;
     overflow: hidden;
-    background: linear-gradient(135deg, #ffd6e8, #e0f7fa, #fff1c1);
+    background: linear-gradient(135deg, #ffd6e8, #ffeaf4, #e8f8ff);
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
 }
 
-/* ===== CARDS ===== */
+/* ===== CARD ===== */
 .card {
     background: rgba(255,255,255,0.9);
     padding: 35px;
@@ -33,12 +33,10 @@ body {
     width: 90%;
     box-shadow: 0 20px 40px rgba(0,0,0,0.15);
     animation: pop 1s ease;
-    z-index: 5;
+    z-index: 10;
 }
 
-.hidden {
-    display: none;
-}
+.hidden { display: none; }
 
 h1 {
     color: #ff5fa2;
@@ -54,10 +52,10 @@ p {
 /* ===== BUTTON ===== */
 button {
     margin-top: 25px;
-    padding: 12px 28px;
+    padding: 12px 30px;
     border: none;
     border-radius: 30px;
-    background: linear-gradient(135deg, #ff7eb3, #ff758c);
+    background: linear-gradient(135deg, #ff7eb3, #ff4f81);
     color: white;
     font-size: 16px;
     cursor: pointer;
@@ -65,8 +63,162 @@ button {
     transition: transform 0.2s;
 }
 
-button:hover {
-    transform: scale(1.05);
+button:hover { transform: scale(1.05); }
+
+/* ===== HEART BUBBLES ===== */
+.bubble-heart {
+    position: absolute;
+    bottom: -40px;
+    font-size: 22px;
+    opacity: 0.85;
+    animation: floatUp linear forwards;
+    pointer-events: none;
+}
+
+@keyframes floatUp {
+    from {
+        transform: translateY(0) scale(0.8);
+        opacity: 0;
+    }
+    10% { opacity: 1; }
+    to {
+        transform: translateY(-120vh) scale(1.6);
+        opacity: 0;
+    }
+}
+
+/* ===== TAP HEART ===== */
+.tap-heart {
+    position: absolute;
+    font-size: 28px;
+    animation: tapPop 1.2s ease forwards;
+    pointer-events: none;
+}
+
+@keyframes tapPop {
+    0% { transform: scale(0.3); opacity: 1; }
+    100% { transform: scale(1.8) translateY(-80px); opacity: 0; }
+}
+
+/* ===== ANIMATION ===== */
+@keyframes pop {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- OPENING -->
+<div class="card" id="opening">
+    <h1>Hello my Favourite person 💓</h1>
+    <p>
+        Before you read my special letter,<br>
+        you can try to tap.<br><br>
+        A heart will appear on your screen 😊💖
+    </p>
+</div>
+
+<button id="readBtn" class="hidden">Read 💌</button>
+
+<!-- LETTER -->
+<div class="card hidden" id="letter">
+    <h1>This is for you 💗</h1>
+    <p id="text"></p>
+</div>
+
+<script>
+let tapped = false;
+const readBtn = document.getElementById("readBtn");
+const opening = document.getElementById("opening");
+const letter = document.getElementById("letter");
+const textEl = document.getElementById("text");
+
+const hearts = ["💗","💖","💘","💕","💞","💓"];
+
+const message = [
+    "Yeah, just for you.",
+    "Why?",
+    "Because you're the only one in this world for me 💗",
+    "",
+    "Thanks for what you have done for me.",
+    "I hope you really understand my feelings after you saw this letter.",
+    "",
+    "I'm gonna work hard and become a better person.",
+    "Because my current dream is simple.",
+    "",
+    "I want to make you smile.",
+    "I want to make you happy.",
+    "And I want to spend my lifetime future with you 💖",
+    "",
+    "Terimakasih sudah membacanya sampai akhir.",
+    "Semoga kamu suka 💗💖"
+];
+
+let index = 0;
+
+/* TAP EVENT */
+document.body.addEventListener("click", (e) => {
+    tapHeart(e.clientX, e.clientY);
+    if (!tapped) {
+        tapped = true;
+        readBtn.classList.remove("hidden");
+    }
+});
+
+readBtn.onclick = () => {
+    opening.classList.add("hidden");
+    readBtn.classList.add("hidden");
+    letter.classList.remove("hidden");
+    showText();
+};
+
+/* TYPE EFFECT */
+function showText() {
+    if (index >= message.length) return;
+
+    let line = message[index];
+    let char = 0;
+
+    const typing = setInterval(() => {
+        textEl.innerHTML += line.charAt(char);
+        char++;
+        if (char === line.length) {
+            clearInterval(typing);
+            textEl.innerHTML += "<br><br>";
+            index++;
+            setTimeout(showText, 700);
+        }
+    }, 35);
+}
+
+/* TAP HEART */
+function tapHeart(x, y) {
+    const heart = document.createElement("div");
+    heart.className = "tap-heart";
+    heart.innerText = hearts[Math.floor(Math.random()*hearts.length)];
+    heart.style.left = x + "px";
+    heart.style.top = y + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 1200);
+}
+
+/* BACKGROUND BUBBLE HEARTS */
+setInterval(() => {
+    const heart = document.createElement("div");
+    heart.className = "bubble-heart";
+    heart.innerText = hearts[Math.floor(Math.random()*hearts.length)];
+    heart.style.left = Math.random()*100 + "vw";
+    heart.style.fontSize = (16 + Math.random()*24) + "px";
+    heart.style.animationDuration = (6 + Math.random()*8) + "s";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 15000);
+}, 400);
+</script>
+
+</body>
+</html>    transform: scale(1.05);
 }
 
 /* ===== FLOWERS IMAGE ===== */

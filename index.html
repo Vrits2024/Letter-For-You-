@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Just For You 💗</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Comic Sans MS','Segoe UI',sans-serif;
+}
+
+body{
+    height:100vh;
+    overflow:hidden;
+    background:linear-gradient(135deg,#ffd6e8,#e0f7fa,#fff1c1);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+}
+
+/* Card */
+.card{
+    background:rgba(255,255,255,0.88);
+    padding:40px;
+    border-radius:25px;
+    text-align:center;
+    box-shadow:0 20px 40px rgba(0,0,0,0.15);
+    z-index:10;
+    animation:pop 1s ease;
+    max-width:420px;
+}
+
+@keyframes pop{
+    from{transform:scale(.6);opacity:0;}
+    to{transform:scale(1);opacity:1;}
+}
+
+h1{
+    color:#ff5fa2;
+    font-size:26px;
+    margin-bottom:15px;
+}
+
+p{
+    font-size:17px;
+    color:#444;
+    line-height:1.6;
+}
+
+/* Button */
+button{
+    margin-top:25px;
+    padding:12px 30px;
+    border:none;
+    border-radius:30px;
+    background:#ff5fa2;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    box-shadow:0 10px 20px rgba(0,0,0,.2);
+    transition:.3s;
+}
+
+button:hover{
+    transform:scale(1.05);
+    background:#ff3f90;
+}
+
+/* Tap Hearts */
+.tap-heart{
+    position:absolute;
+    font-size:28px;
+    animation:tapFloat 1.5s ease forwards;
+    pointer-events:none;
+}
+
+@keyframes tapFloat{
+    0%{transform:scale(.5);opacity:0;}
+    30%{opacity:1;}
+    100%{transform:translateY(-80px) scale(1.5);opacity:0;}
+}
+
+/* Floating Hearts */
+.heart{
+    position:absolute;
+    bottom:-40px;
+    font-size:22px;
+    animation:floatUp 7s linear infinite;
+}
+
+@keyframes floatUp{
+    0%{opacity:0;transform:translateY(0);}
+    10%{opacity:1;}
+    100%{opacity:0;transform:translateY(-120vh);}
+}
+
+/* Flowers */
+.flower{
+    position:absolute;
+    width:40px;
+    animation:drift 12s linear infinite;
+    opacity:.9;
+}
+
+@keyframes drift{
+    from{transform:translateY(0) rotate(0deg);}
+    to{transform:translateY(-120vh) rotate(360deg);}
+}
+</style>
+</head>
+
+<body>
+
+<div class="card" id="card">
+    <h1>Hello my Favourite person 💓</h1>
+    <p id="introText">
+        before you read my special letter,<br>
+        you can try to tap<br>
+        <b>A heart will appear on your screen 😊💖</b>
+    </p>
+    <button id="readBtn" style="display:none;">Read 💌</button>
+</div>
+
+<script>
+let tapped=false;
+const readBtn=document.getElementById("readBtn");
+const card=document.getElementById("card");
+
+const letterLines=[
+"This is for you. Yes, just for you 💗",
+"",
+"Why?",
+"Because you're the only one in this world for me 💖",
+"",
+"Thanks for what you have done for me.",
+"I hope you really understand my feelings after you saw this letter.",
+"",
+"I'm gonna work harder and become a better, more successful person.",
+"",
+"Because my current dream is simple…",
+"I want to make you smile.",
+"I want to make you happy.",
+"And spend my lifetime future with you 💞",
+"",
+"Terimakasih sudah membacanya sampai akhir.",
+"Semoga kamu suka 💗💖"
+];
+
+let lineIndex=0;
+let charIndex=0;
+
+/* Tap Interaction */
+document.body.addEventListener("click",e=>{
+    createTapHeart(e.clientX,e.clientY);
+    if(!tapped){
+        tapped=true;
+        readBtn.style.display="inline-block";
+    }
+});
+
+/* Read Button */
+readBtn.onclick=()=>{
+    card.innerHTML="<p id='letter'></p>";
+    typeWriter();
+};
+
+/* Typewriter */
+function typeWriter(){
+    if(lineIndex>=letterLines.length) return;
+    const p=document.getElementById("letter");
+    if(charIndex < letterLines[lineIndex].length){
+        p.innerHTML += letterLines[lineIndex].charAt(charIndex);
+        charIndex++;
+        setTimeout(typeWriter,40);
+    }else{
+        p.innerHTML += "<br><br>";
+        charIndex=0;
+        lineIndex++;
+        setTimeout(typeWriter,500);
+    }
+}
+
+/* Tap Heart */
+function createTapHeart(x,y){
+    const heart=document.createElement("div");
+    heart.className="tap-heart";
+    heart.innerText=["💗","💖","💘","💕"][Math.floor(Math.random()*4)];
+    heart.style.left=x+"px";
+    heart.style.top=y+"px";
+    document.body.appendChild(heart);
+    setTimeout(()=>heart.remove(),1500);
+}
+
+/* Floating Hearts */
+setInterval(()=>{
+    const h=document.createElement("div");
+    h.className="heart";
+    h.innerText=["💗","💖","💕","💘"][Math.floor(Math.random()*4)];
+    h.style.left=Math.random()*100+"vw";
+    h.style.animationDuration=5+Math.random()*4+"s";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),9000);
+},500);
+
+/* Flowers */
+const flowerImgs=[
+"https://images.unsplash.com/photo-1501004318641-b39e6451bec6?w=200",
+"https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=200",
+"https://images.unsplash.com/photo-1508747703725-719777637510?w=200"
+];
+
+setInterval(()=>{
+    const f=document.createElement("img");
+    f.className="flower";
+    f.src=flowerImgs[Math.floor(Math.random()*flowerImgs.length)];
+    f.style.left=Math.random()*100+"vw";
+    f.style.animationDuration=10+Math.random()*6+"s";
+    document.body.appendChild(f);
+    setTimeout(()=>f.remove(),15000);
+},1200);
+</script>
+
+</body>
+</html>        }
+    }
+
+    /* Flowers */
+    .flower {
+        position: absolute;
+        font-size: 22px;
+        animation: drift 10s linear infinite;
+        opacity: 0.9;
+    }
+
+    @keyframes drift {
+        0% {
+            transform: translateY(0) rotate(0deg);
+        }
+        100% {
+            transform: translateY(-110vh) rotate(360deg);
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="card">
+    <h1>💐 this is for you!</h1>
+    <p>
+        yeah just for you!<br><br>
+        Why?<br>
+        Because you're the only one in this world for me 💗
+    </p>
+</div>
+
+<script>
+    const hearts = ["💗","💖","💘","💕"];
+    const flowers = ["🌸","🌷","🌼","🌺"];
+
+    function createFloatingElement(typeArray, className) {
+        const el = document.createElement("div");
+        el.className = className;
+        el.innerText = typeArray[Math.floor(Math.random() * typeArray.length)];
+        el.style.left = Math.random() * 100 + "vw";
+        el.style.animationDuration = (6 + Math.random() * 6) + "s";
+        document.body.appendChild(el);
+
+        setTimeout(() => {
+            el.remove();
+        }, 12000);
+    }
+
+    setInterval(() => createFloatingElement(hearts, "heart"), 400);
+    setInterval(() => createFloatingElement(flowers, "flower"), 700);
+</script>
+
+</body>
+</html>}  
+
+.card p {  
+    font-size: 18px;  
+    color: #444;  
+    line-height: 1.6;  
+}  
+
+@keyframes pop {  
+    0% { transform: scale(0.6); opacity: 0; }  
+    100% { transform: scale(1); opacity: 1; }  
+}  
+
+/* Hearts */  
+.heart {  
+    position: absolute;  
+    bottom: -50px;  
+    font-size: 24px;  
+    animation: floatUp 8s linear infinite;  
+    opacity: 0.8;  
+}  
+
+@keyframes floatUp {  
+    0% {  
+        transform: translateY(0) scale(1);  
+        opacity: 0;  
+    }  
+    10% { opacity: 1; }  
+    100% {  
+        transform: translateY(-120vh) scale(1.5);  
+        opacity: 0;  
+    }  
+}  
+
+/* Flowers */  
+.flower {  
+    position: absolute;  
+    font-size: 22px;  
+    animation: drift 10s linear infinite;  
+    opacity: 0.9;  
+}  
+
+@keyframes drift {  
+    0% {  
+        transform: translateY(0) rotate(0deg);  
+    }  
+    100% {  
+        transform: translateY(-110vh) rotate(360deg);  
+    }  
+}
+
+</style>  
+</head>  
+<body>  <div class="card">  
+    <h1>💐 this is for you!</h1>  
+    <p>  
+        yeah just for you!<br><br>  
+        Why?<br>  
+        Because you're the only one in this world for me 💗  
+    </p>  
+</div>  <script>  
+    const hearts = ["💗","💖","💘","💕"];  
+    const flowers = ["🌸","🌷","🌼","🌺"];  
+  
+    function createFloatingElement(typeArray, className) {  
+        const el = document.createElement("div");  
+        el.className = className;  
+        el.innerText = typeArray[Math.floor(Math.random() * typeArray.length)];  
+        el.style.left = Math.random() * 100 + "vw";  
+        el.style.animationDuration = (6 + Math.random() * 6) + "s";  
+        document.body.appendChild(el);  
+  
+        setTimeout(() => {  
+            el.remove();  
+        }, 12000);  
+    }  
+  
+    setInterval(() => createFloatingElement(hearts, "heart"), 400);  
+    setInterval(() => createFloatingElement(flowers, "flower"), 700);  
+</script>  </body>  
+</html>

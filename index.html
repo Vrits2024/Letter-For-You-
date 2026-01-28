@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Just For You 💗</title>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+        height: 100vh;
+        overflow: hidden;
+        background: linear-gradient(135deg, #ffd6e8, #e0f7fa, #fff1c1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        touch-action: none; /* Mencegah zoom saat tap di HP */
+    }
+
+    .card {
+        background: rgba(255, 255, 255, 0.9);
+        padding: 40px;
+        border-radius: 30px;
+        text-align: center;
+        box-shadow: 0 15px 35px rgba(255, 95, 162, 0.2);
+        z-index: 10;
+        max-width: 85%;
+        width: 450px;
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        transition: all 0.5s ease;
+    }
+
+    .card h1 {
+        color: #ff5fa2;
+        font-size: 26px;
+        margin-bottom: 20px;
+    }
+
+    .text-container {
+        min-height: 100px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .sentence {
+        font-size: 18px;
+        color: #444;
+        line-height: 1.5;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: all 0.8s ease;
+    }
+
+    .sentence.active {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .btn-next {
+        margin-top: 25px;
+        padding: 12px 25px;
+        background: #ff5fa2;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: bold;
+        box-shadow: 0 5px 15px rgba(255, 95, 162, 0.4);
+        transition: transform 0.2s;
+        display: none; /* Muncul setelah teks selesai */
+    }
+
+    .btn-next:active {
+        transform: scale(0.95);
+    }
+
+    /* Floating Background Elements */
+    .heart, .flower {
+        position: absolute;
+        bottom: -50px;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    @keyframes floatUp {
+        0% { transform: translateY(0) scale(1); opacity: 0; }
+        10% { opacity: 0.8; }
+        100% { transform: translateY(-120vh) scale(1.5); opacity: 0; }
+    }
+
+    /* Touch Interaction Heart */
+    .touch-heart {
+        position: absolute;
+        pointer-events: none;
+        font-size: 20px;
+        animation: burst 1s ease-out forwards;
+        z-index: 100;
+    }
+
+    @keyframes burst {
+        0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+        100% { transform: translate(-50%, -150%) scale(2); opacity: 0; }
+    }
+</style>
+</head>
+<body>
+
+<div class="card" id="mainCard">
+    <h1 id="title">💐 Just For You</h1>
+    
+    <div class="text-container" id="textContainer">
+        </div>
+
+    <button class="btn-next" id="nextBtn" onclick="startSession2()">Klik ini yaa.. ❤️</button>
+</div>
+
+<script>
+    const textContainer = document.getElementById('textContainer');
+    const nextBtn = document.getElementById('nextBtn');
+    const title = document.getElementById('title');
+
+    const session1 = [
+        "This is for you!",
+        "Yeah, just for you! ✨",
+        "Why?",
+        "Because you're the only one in this world for me 💗"
+    ];
+
+    const session2 = [
+        "Thanks for everything you've done for me...",
+        "I hope you really understand my feelings after you see this. 💌",
+        "I'm gonna work hard to be a better, successful person...",
+        "So I can achieve my current dream.",
+        "Yes, my dream is to make you smile, make you happy...",
+        "And spend my lifetime future with you! 💍",
+        "Terimakasih sudah membacanya sampai akhir, semoga kamu suka 💗💖"
+    ];
+
+    let currentSession = 1;
+
+    // Fungsi untuk memunculkan teks satu per satu
+    async function showSentences(array) {
+        textContainer.innerHTML = '';
+        nextBtn.style.display = 'none';
+        
+        for (let i = 0; i < array.length; i++) {
+            const p = document.createElement('p');
+            p.className = 'sentence';
+            p.innerText = array[i];
+            textContainer.appendChild(p);
+            
+            // Trigger reflow untuk animasi
+            setTimeout(() => p.classList.add('active'), 100);
+            
+            // Tunggu sebelum memunculkan kalimat berikutnya
+            await new Promise(resolve => setTimeout(resolve, 1800));
+        }
+
+        if(currentSession === 1) {
+            nextBtn.style.display = 'inline-block';
+        }
+    }
+
+    function startSession2() {
+        currentSession = 2;
+        title.innerText = "Deeply from my heart 💖";
+        showSentences(session2);
+    }
+
+    // Efek Klik/Sentuh Layar
+    document.addEventListener('pointerdown', (e) => {
+        createTouchHeart(e.clientX, e.clientY);
+    });
+
+    function createTouchHeart(x, y) {
+        const hearts = ["❤️", "💖", "✨", "🌸", "💘"];
+        const h = document.createElement("div");
+        h.className = "touch-heart";
+        h.innerText = hearts[Math.floor(Math.random() * hearts.length)];
+        h.style.left = x + "px";
+        h.style.top = y + "px";
+        document.body.appendChild(h);
+
+        setTimeout(() => h.remove(), 1000);
+    }
+
+    // Animasi Background (Hati & Bunga)
+    function createBgElement(typeArray, className) {
+        const el = document.createElement("div");
+        el.className = className;
+        el.innerText = typeArray[Math.floor(Math.random() * typeArray.length)];
+        el.style.left = Math.random() * 100 + "vw";
+        el.style.fontSize = (15 + Math.random() * 20) + "px";
+        el.style.animation = `floatUp ${6 + Math.random() * 6}s linear infinite`;
+        document.body.appendChild(el);
+
+        setTimeout(() => el.remove(), 12000);
+    }
+
+    setInterval(() => createBgElement(["💗","💖","💕"], "heart"), 500);
+    setInterval(() => createBgElement(["🌸","🌷","🌼"], "flower"), 800);
+
+    // Mulai Sesi Pertama
+    showSentences(session1);
+
+</script>
+
+</body>
+  </html>

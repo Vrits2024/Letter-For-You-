@@ -1,40 +1,120 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Just For You 💗</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', 'Comic Sans MS', sans-serif;
+<html lang="en">  
+<head>  
+<meta charset="UTF-8">  
+<title>Just For You 💗</title>  
+<style>  
+    * {  
+        margin: 0;  
+        padding: 0;  
+        box-sizing: border-box;  
+        font-family: 'Comic Sans MS', 'Segoe UI', sans-serif;  
+    }  body {  
+    height: 100vh;  
+    overflow: hidden;  
+    background: linear-gradient(135deg, #ffd6e8, #e0f7fa, #fff1c1);  
+    display: flex;  
+    justify-content: center;  
+    align-items: center;  
+    position: relative;  
+}  
+
+.card {  
+    background: rgba(255, 255, 255, 0.85);  
+    padding: 40px;  
+    border-radius: 25px;  
+    text-align: center;  
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);  
+    z-index: 10;  
+    animation: pop 1.2s ease;  
+}  
+
+.card h1 {  
+    color: #ff5fa2;  
+    font-size: 28px;  
+    margin-bottom: 15px;  
+}  
+
+.card p {  
+    font-size: 18px;  
+    color: #444;  
+    line-height: 1.6;  
+}  
+
+@keyframes pop {  
+    0% { transform: scale(0.6); opacity: 0; }  
+    100% { transform: scale(1); opacity: 1; }  
+}  
+
+/* Hearts */  
+.heart {  
+    position: absolute;  
+    bottom: -50px;  
+    font-size: 24px;  
+    animation: floatUp 8s linear infinite;  
+    opacity: 0.8;  
+}  
+
+@keyframes floatUp {  
+    0% {  
+        transform: translateY(0) scale(1);  
+        opacity: 0;  
+    }  
+    10% { opacity: 1; }  
+    100% {  
+        transform: translateY(-120vh) scale(1.5);  
+        opacity: 0;  
+    }  
+}  
+
+/* Flowers */  
+.flower {  
+    position: absolute;  
+    font-size: 22px;  
+    animation: drift 10s linear infinite;  
+    opacity: 0.9;  
+}  
+
+@keyframes drift {  
+    0% {  
+        transform: translateY(0) rotate(0deg);  
+    }  
+    100% {  
+        transform: translateY(-110vh) rotate(360deg);  
+    }  
 }
 
-body {
-    height: 100vh;
-    overflow: hidden;
-    background: linear-gradient(135deg, #ffd6e8, #e6f7ff, #fff6d5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-}
-
-/* Card */
-.card {
-    background: rgba(255, 255, 255, 0.88);
-    padding: 35px 28px;
-    border-radius: 25px;
-    max-width: 360px;
-    text-align: center;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-    z-index: 10;
-    animation: fadeUp 1.4s ease;
-}
-
+</style>  
+</head>  
+<body>  <div class="card">  
+    <h1>💐 this is for you!</h1>  
+    <p>  
+        yeah just for you!<br><br>  
+        Why?<br>  
+        Because you're the only one in this world for me 💗  
+    </p>  
+</div>  <script>  
+    const hearts = ["💗","💖","💘","💕"];  
+    const flowers = ["🌸","🌷","🌼","🌺"];  
+  
+    function createFloatingElement(typeArray, className) {  
+        const el = document.createElement("div");  
+        el.className = className;  
+        el.innerText = typeArray[Math.floor(Math.random() * typeArray.length)];  
+        el.style.left = Math.random() * 100 + "vw";  
+        el.style.animationDuration = (6 + Math.random() * 6) + "s";  
+        document.body.appendChild(el);  
+  
+        setTimeout(() => {  
+            el.remove();  
+        }, 12000);  
+    }  
+  
+    setInterval(() => createFloatingElement(hearts, "heart"), 400);  
+    setInterval(() => createFloatingElement(flowers, "flower"), 700);  
+</script>  </body>  
+</html>
 @keyframes fadeUp {
     from { transform: translateY(40px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }

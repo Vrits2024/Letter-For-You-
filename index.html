@@ -2,13 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Just For You 💗</title>
+
 <style>
     * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        font-family: 'Comic Sans MS', 'Segoe UI', sans-serif;
+        font-family: 'Segoe UI', 'Poppins', Arial, sans-serif;
     }
 
     body {
@@ -22,27 +24,29 @@
     }
 
     .card {
-        background: rgba(255, 255, 255, 0.88);
-        padding: 40px;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 28px 24px;
         border-radius: 25px;
         text-align: center;
         box-shadow: 0 20px 40px rgba(0,0,0,0.15);
         z-index: 10;
+        width: 90%;
         max-width: 420px;
+        max-height: 80vh;
+        overflow-y: auto;
         animation: pop 1.2s ease;
     }
 
     .card h1 {
         color: #ff5fa2;
-        font-size: 28px;
+        font-size: 24px;
         margin-bottom: 15px;
     }
 
     .card p {
-        font-size: 18px;
+        font-size: 16px;
         color: #444;
         line-height: 1.7;
-        min-height: 260px;
         white-space: pre-line;
     }
 
@@ -51,27 +55,30 @@
         100% { transform: scale(1); opacity: 1; }
     }
 
-    /* Hearts */
+    /* Floating Hearts */
     .heart {
         position: absolute;
-        bottom: -50px;
-        font-size: 24px;
-        animation: floatUp 8s linear infinite;
+        bottom: -40px;
+        font-size: 22px;
+        animation: floatUp linear infinite;
         opacity: 0.8;
+        pointer-events: none;
     }
 
     @keyframes floatUp {
         0% { transform: translateY(0) scale(1); opacity: 0; }
         10% { opacity: 1; }
-        100% { transform: translateY(-120vh) scale(1.5); opacity: 0; }
+        100% { transform: translateY(-120vh) scale(1.4); opacity: 0; }
     }
 
-    /* Flowers */
+    /* Floating Flowers */
     .flower {
         position: absolute;
-        font-size: 22px;
-        animation: drift 10s linear infinite;
-        opacity: 0.9;
+        bottom: -40px;
+        font-size: 20px;
+        animation: drift linear infinite;
+        opacity: 0.85;
+        pointer-events: none;
     }
 
     @keyframes drift {
@@ -80,6 +87,7 @@
     }
 </style>
 </head>
+
 <body>
 
 <div class="card">
@@ -88,28 +96,29 @@
 </div>
 
 <script>
-    const hearts = ["💗","💖","💘","💕"];
+    /* Floating Elements */
+    const hearts = ["💗","💖","💕","💘"];
     const flowers = ["🌸","🌷","🌼","🌺"];
 
-    function createFloatingElement(typeArray, className) {
+    function createFloatingElement(arr, className) {
         const el = document.createElement("div");
         el.className = className;
-        el.innerText = typeArray[Math.floor(Math.random() * typeArray.length)];
+        el.innerText = arr[Math.floor(Math.random() * arr.length)];
         el.style.left = Math.random() * 100 + "vw";
-        el.style.animationDuration = (6 + Math.random() * 6) + "s";
+        el.style.animationDuration = (8 + Math.random() * 4) + "s";
         document.body.appendChild(el);
 
-        setTimeout(() => el.remove(), 12000);
+        setTimeout(() => el.remove(), 13000);
     }
 
-    setInterval(() => createFloatingElement(hearts, "heart"), 400);
-    setInterval(() => createFloatingElement(flowers, "flower"), 700);
+    setInterval(() => createFloatingElement(hearts, "heart"), 700);
+    setInterval(() => createFloatingElement(flowers, "flower"), 1200);
 
     /* Typing Effect */
     const message = `Thank you… for everything you’ve done for me.
 Maybe you don’t realize it, but you mean more to me than words can explain.
 
-I hope, after reading this little letter, you can understand my feelings—
+I hope, after reading this little letter, you can understand my feelings —
 not rushed, not forced, just honest.
 
 I’m working on becoming a better and stronger person,
@@ -118,13 +127,15 @@ chasing my dreams one step at a time.
 And right now… my dream is simple.
 I want to be someone who can make you smile,
 someone who can make you feel safe and happy,
-and someone who can spend the future—my lifetime—with you.
+and someone who can spend the future —
+my lifetime — with you.
 
 Thank you for reading this until the very end.
-I hope it made your heart smile, even just a little 💗💖`;
+I hope it made your heart smile,
+even just a little 💗💖`;
 
     let index = 0;
-    const speed = 40; // makin kecil makin cepat
+    const speed = 40;
 
     function typeEffect() {
         if (index < message.length) {
@@ -138,185 +149,4 @@ I hope it made your heart smile, even just a little 💗💖`;
 </script>
 
 </body>
-</html>        transition: all 0.5s ease;
-    }
-
-    .card h1 {
-        color: #ff5fa2;
-        font-size: 26px;
-        margin-bottom: 20px;
-    }
-
-    .text-container {
-        min-height: 100px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        gap: 15px;
-    }
-
-    .sentence {
-        font-size: 18px;
-        color: #444;
-        line-height: 1.5;
-        opacity: 0;
-        transform: translateY(10px);
-        transition: all 0.8s ease;
-    }
-
-    .sentence.active {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    .btn-next {
-        margin-top: 25px;
-        padding: 12px 25px;
-        background: #ff5fa2;
-        color: white;
-        border: none;
-        border-radius: 50px;
-        cursor: pointer;
-        font-weight: bold;
-        box-shadow: 0 5px 15px rgba(255, 95, 162, 0.4);
-        transition: transform 0.2s;
-        display: none; /* Muncul setelah teks selesai */
-    }
-
-    .btn-next:active {
-        transform: scale(0.95);
-    }
-
-    /* Floating Background Elements */
-    .heart, .flower {
-        position: absolute;
-        bottom: -50px;
-        pointer-events: none;
-        z-index: 1;
-    }
-
-    @keyframes floatUp {
-        0% { transform: translateY(0) scale(1); opacity: 0; }
-        10% { opacity: 0.8; }
-        100% { transform: translateY(-120vh) scale(1.5); opacity: 0; }
-    }
-
-    /* Touch Interaction Heart */
-    .touch-heart {
-        position: absolute;
-        pointer-events: none;
-        font-size: 20px;
-        animation: burst 1s ease-out forwards;
-        z-index: 100;
-    }
-
-    @keyframes burst {
-        0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
-        100% { transform: translate(-50%, -150%) scale(2); opacity: 0; }
-    }
-</style>
-</head>
-<body>
-
-<div class="card" id="mainCard">
-    <h1 id="title">💐 Just For You</h1>
-    
-    <div class="text-container" id="textContainer">
-        </div>
-
-    <button class="btn-next" id="nextBtn" onclick="startSession2()">Klik ini yaa.. ❤️</button>
-</div>
-
-<script>
-    const textContainer = document.getElementById('textContainer');
-    const nextBtn = document.getElementById('nextBtn');
-    const title = document.getElementById('title');
-
-    const session1 = [
-        "This is for you!",
-        "Yeah, just for you! ✨",
-        "Why?",
-        "Because you're the only one in this world for me 💗"
-    ];
-
-    const session2 = [
-        "Thanks for everything you've done for me...",
-        "I hope you really understand my feelings after you see this. 💌",
-        "I'm gonna work hard to be a better, successful person...",
-        "So I can achieve my current dream.",
-        "Yes, my dream is to make you smile, make you happy...",
-        "And spend my lifetime future with you! 💍",
-        "Terimakasih sudah membacanya sampai akhir, semoga kamu suka 💗💖"
-    ];
-
-    let currentSession = 1;
-
-    // Fungsi untuk memunculkan teks satu per satu
-    async function showSentences(array) {
-        textContainer.innerHTML = '';
-        nextBtn.style.display = 'none';
-        
-        for (let i = 0; i < array.length; i++) {
-            const p = document.createElement('p');
-            p.className = 'sentence';
-            p.innerText = array[i];
-            textContainer.appendChild(p);
-            
-            // Trigger reflow untuk animasi
-            setTimeout(() => p.classList.add('active'), 100);
-            
-            // Tunggu sebelum memunculkan kalimat berikutnya
-            await new Promise(resolve => setTimeout(resolve, 1800));
-        }
-
-        if(currentSession === 1) {
-            nextBtn.style.display = 'inline-block';
-        }
-    }
-
-    function startSession2() {
-        currentSession = 2;
-        title.innerText = "Deeply from my heart 💖";
-        showSentences(session2);
-    }
-
-    // Efek Klik/Sentuh Layar
-    document.addEventListener('pointerdown', (e) => {
-        createTouchHeart(e.clientX, e.clientY);
-    });
-
-    function createTouchHeart(x, y) {
-        const hearts = ["❤️", "💖", "✨", "🌸", "💘"];
-        const h = document.createElement("div");
-        h.className = "touch-heart";
-        h.innerText = hearts[Math.floor(Math.random() * hearts.length)];
-        h.style.left = x + "px";
-        h.style.top = y + "px";
-        document.body.appendChild(h);
-
-        setTimeout(() => h.remove(), 1000);
-    }
-
-    // Animasi Background (Hati & Bunga)
-    function createBgElement(typeArray, className) {
-        const el = document.createElement("div");
-        el.className = className;
-        el.innerText = typeArray[Math.floor(Math.random() * typeArray.length)];
-        el.style.left = Math.random() * 100 + "vw";
-        el.style.fontSize = (15 + Math.random() * 20) + "px";
-        el.style.animation = `floatUp ${6 + Math.random() * 6}s linear infinite`;
-        document.body.appendChild(el);
-
-        setTimeout(() => el.remove(), 12000);
-    }
-
-    setInterval(() => createBgElement(["💗","💖","💕"], "heart"), 500);
-    setInterval(() => createBgElement(["🌸","🌷","🌼"], "flower"), 800);
-
-    // Mulai Sesi Pertama
-    showSentences(session1);
-
-</script>
-
-</body>
-  </html>
+</html>

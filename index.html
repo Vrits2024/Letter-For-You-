@@ -7,97 +7,92 @@
 
 <style>
 *{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI','Comic Sans MS',sans-serif;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI','Comic Sans MS',sans-serif;
 }
 
 body{
-    height:100vh;
-    overflow:hidden;
-    background:linear-gradient(135deg,#ffd6e8,#e8f6ff,#fff3d6);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    position:relative;
+  height:100vh;
+  overflow:hidden;
+  background:linear-gradient(135deg,#ffd6e8,#e8f7ff,#fff1d6);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  position:relative;
+}
+
+/* Floating heart bubbles */
+.bubble{
+  position:absolute;
+  bottom:-60px;
+  font-size:22px;
+  opacity:.7;
+  animation:floatUp linear infinite;
+}
+
+@keyframes floatUp{
+  from{transform:translateY(0) scale(.8);}
+  to{transform:translateY(-120vh) scale(1.5);}
 }
 
 /* Card */
 .card{
-    background:rgba(255,255,255,0.9);
-    padding:32px 26px;
-    border-radius:26px;
-    max-width:380px;
-    text-align:center;
-    box-shadow:0 25px 55px rgba(0,0,0,.15);
-    z-index:10;
-    animation:fadeUp 1.2s ease;
+  background:rgba(255,255,255,.9);
+  padding:32px 26px;
+  border-radius:26px;
+  max-width:360px;
+  text-align:center;
+  box-shadow:0 25px 50px rgba(0,0,0,.15);
+  z-index:10;
+  animation:fadeUp 1.2s ease;
 }
 
 @keyframes fadeUp{
-    from{transform:translateY(40px);opacity:0}
-    to{transform:translateY(0);opacity:1}
+  from{transform:translateY(40px);opacity:0}
+  to{transform:translateY(0);opacity:1}
 }
 
 h1{
-    font-size:24px;
-    color:#ff5fa2;
-    margin-bottom:16px;
+  color:#ff5fa2;
+  font-size:25px;
+  margin-bottom:15px;
 }
 
 p{
-    font-size:16px;
-    color:#444;
-    line-height:1.7;
-    min-height:220px;
+  font-size:16px;
+  color:#444;
+  line-height:1.65;
+  min-height:200px;
 }
 
-/* Read Button */
+/* Button */
 button{
-    margin-top:18px;
-    padding:10px 26px;
-    border:none;
-    border-radius:30px;
-    background:#ff5fa2;
-    color:#fff;
-    font-size:15px;
-    cursor:pointer;
-    display:none;
-    animation:pulse 1.4s infinite;
+  margin-top:18px;
+  padding:10px 22px;
+  border:none;
+  border-radius:20px;
+  background:#ff5fa2;
+  color:#fff;
+  font-size:15px;
+  cursor:pointer;
+  box-shadow:0 8px 18px rgba(255,95,162,.4);
+  display:none;
 }
 
-@keyframes pulse{
-    0%{box-shadow:0 0 0 0 rgba(255,95,162,.6)}
-    70%{box-shadow:0 0 0 18px rgba(255,95,162,0)}
-    100%{box-shadow:0 0 0 0 rgba(255,95,162,0)}
-}
-
-/* Touch heart */
+/* Tap hearts */
 .touch-heart{
-    position:absolute;
-    font-size:22px;
-    animation:heartPop 1.6s ease forwards;
-    pointer-events:none;
+  position:absolute;
+  font-size:22px;
+  animation:popHeart 1.5s ease forwards;
+  pointer-events:none;
 }
 
-@keyframes heartPop{
-    0%{transform:scale(.4);opacity:0}
-    30%{opacity:1}
-    100%{transform:scale(1.6) translateY(-80px);opacity:0}
-}
-
-/* Floating bubble hearts */
-.bubble{
-    position:absolute;
-    font-size:20px;
-    opacity:.6;
-    animation:floatUp linear infinite;
-}
-
-@keyframes floatUp{
-    from{transform:translateY(110vh)}
-    to{transform:translateY(-120vh)}
+@keyframes popHeart{
+  0%{transform:scale(.3);opacity:0}
+  20%{opacity:1}
+  100%{transform:scale(1.6) translateY(-80px);opacity:0}
 }
 </style>
 </head>
@@ -105,305 +100,86 @@ button{
 <body>
 
 <div class="card">
-    <h1>💗 Hello</h1>
-    <p id="text">
-        Hello my favourite person 💓<br><br>
-        Before you read my special letter,<br>
-        you can try to tap the screen.<br><br>
-        A heart will appear on your cellphone or laptop screen 😊💖
-    </p>
-    <button id="readBtn">Read 💌</button>
+  <h1 id="title">💗 Hello my favourite person</h1>
+  <p id="text">
+    Before you read my special letter,<br>
+    you can try to tap the screen.<br><br>
+    A heart will appear for you 😊💖
+  </p>
+  <button id="readBtn">Read 💌</button>
 </div>
 
 <script>
-/* Bubble hearts background */
-const bubbles=["💗","💖","💕","💘"];
+/* Floating background hearts */
+const heartsBg=["💗","💖","💕","💘"];
 function createBubble(){
-    const b=document.createElement("div");
-    b.className="bubble";
-    b.innerText=bubbles[Math.floor(Math.random()*bubbles.length)];
-    b.style.left=Math.random()*100+"vw";
-    b.style.animationDuration=(8+Math.random()*8)+"s";
-    b.style.fontSize=(16+Math.random()*16)+"px";
-    document.body.appendChild(b);
-    setTimeout(()=>b.remove(),16000);
+  const b=document.createElement("div");
+  b.className="bubble";
+  b.innerText=heartsBg[Math.floor(Math.random()*heartsBg.length)];
+  b.style.left=Math.random()*100+"vw";
+  b.style.animationDuration=(8+Math.random()*8)+"s";
+  document.body.appendChild(b);
+  setTimeout(()=>b.remove(),16000);
 }
 setInterval(createBubble,700);
 
-/* Tap heart logic */
+/* Tap hearts */
 let tapped=false;
 document.addEventListener("click",(e)=>{
-    const h=document.createElement("div");
-    h.className="touch-heart";
-    h.innerText="💗";
-    h.style.left=e.clientX+"px";
-    h.style.top=e.clientY+"px";
-    document.body.appendChild(h);
-    setTimeout(()=>h.remove(),1600);
+  const h=document.createElement("div");
+  h.className="touch-heart";
+  h.innerText="💗";
+  h.style.left=e.clientX+"px";
+  h.style.top=e.clientY+"px";
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),1500);
 
-    if(!tapped){
-        tapped=true;
-        document.getElementById("readBtn").style.display="inline-block";
-    }
+  if(!tapped){
+    tapped=true;
+    document.getElementById("readBtn").style.display="inline-block";
+  }
 });
 
 /* Romantic letter */
 const messages=[
-"This is for you. Yes… just for you.",
-"Because among billions of people in this world, you are the one who holds my attention the most 💗",
-"Thank you… for everything you’ve done, even for the small things you might never realize.",
-"I hope after you read this, you can feel what I truly feel.",
-"I’m trying every day to become a better version of myself.",
-"Working harder. Growing stronger. Becoming more worthy.",
-"Because right now, my dream is very simple.",
-"I want to make you smile.",
-"I want to make you feel safe, calm, and happy.",
-"And if someday life allows…",
-"I want to spend my future, my lifetime, with you.",
-"Terima kasih sudah membaca sampai akhir. Semoga kamu menyukainya 💗💖"
+  "This is for you. Yes… just for you.",
+  "Because among all the people in this world, somehow… you are the one who stays in my mind and heart 💗",
+  "Thank you, for everything you’ve done. For the little things, and the big ones too.",
+  "I hope after you read this, you can understand what I truly feel.",
+  "I promise myself to keep growing, learning, and becoming a better person.",
+  "Because right now, my dream is simple.",
+  "To see you smile. To make you feel safe. To make you happy.",
+  "And if fate allows… I want to spend my future, my lifetime, with you.",
+  "Terima kasih sudah membaca sampai akhir. Semoga kamu menyukainya 💗💖"
 ];
 
 let i=0,j=0;
-const speed=38;
 const textEl=document.getElementById("text");
 
 function typeLetter(){
-    if(i<messages.length){
-        if(j<messages[i].length){
-            textEl.innerHTML+=messages[i].charAt(j);
-            j++;
-            setTimeout(typeLetter,speed);
-        }else{
-            textEl.innerHTML+="<br><br>";
-            i++;
-            j=0;
-            setTimeout(typeLetter,700);
-        }
+  if(i<messages.length){
+    if(j<messages[i].length){
+      textEl.innerHTML+=messages[i].charAt(j);
+      j++;
+      setTimeout(typeLetter,40);
+    }else{
+      textEl.innerHTML+="<br><br>";
+      i++; j=0;
+      setTimeout(typeLetter,700);
     }
+  }
 }
 
 document.getElementById("readBtn").onclick=()=>{
-    textEl.innerHTML="";
-    document.querySelector("h1").innerText="💌 Just For You";
-    document.getElementById("readBtn").style.display="none";
-    typeLetter();
+  document.getElementById("title").innerText="💌 Just for you";
+  textEl.innerHTML="";
+  document.getElementById("readBtn").style.display="none";
+  typeLetter();
 };
 </script>
 
 </body>
-</html>you 💖",
-    "",
-    "Terimakasih sudah membacanya sampai akhir.",
-    "Semoga kamu suka 💗💖"
-];
-
-let index = 0;
-
-/* TAP EVENT */
-document.body.addEventListener("click", (e) => {
-    tapHeart(e.clientX, e.clientY);
-    if (!tapped) {
-        tapped = true;
-        readBtn.classList.remove("hidden");
-    }
-});
-
-readBtn.onclick = () => {
-    opening.classList.add("hidden");
-    readBtn.classList.add("hidden");
-    letter.classList.remove("hidden");
-    showText();
-};
-
-/* TYPE EFFECT */
-function showText() {
-    if (index >= message.length) return;
-
-    let line = message[index];
-    let char = 0;
-
-    const typing = setInterval(() => {
-        textEl.innerHTML += line.charAt(char);
-        char++;
-        if (char === line.length) {
-            clearInterval(typing);
-            textEl.innerHTML += "<br><br>";
-            index++;
-            setTimeout(showText, 700);
-        }
-    }, 35);
-}
-
-/* TAP HEART */
-function tapHeart(x, y) {
-    const heart = document.createElement("div");
-    heart.className = "tap-heart";
-    heart.innerText = hearts[Math.floor(Math.random()*hearts.length)];
-    heart.style.left = x + "px";
-    heart.style.top = y + "px";
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 1200);
-}
-
-/* BACKGROUND BUBBLE HEARTS */
-setInterval(() => {
-    const heart = document.createElement("div");
-    heart.className = "bubble-heart";
-    heart.innerText = hearts[Math.floor(Math.random()*hearts.length)];
-    heart.style.left = Math.random()*100 + "vw";
-    heart.style.fontSize = (16 + Math.random()*24) + "px";
-    heart.style.animationDuration = (6 + Math.random()*8) + "s";
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 15000);
-}, 400);
-</script>
-
-</body>
-</html>    transform: scale(1.05);
-}
-
-/* ===== FLOWERS IMAGE ===== */
-.flower-img {
-    width: 120px;
-    margin: 20px auto;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-}
-
-/* ===== FLOATING HEARTS ===== */
-.heart {
-    position: absolute;
-    font-size: 26px;
-    animation: floatUp 6s linear forwards;
-    pointer-events: none;
-}
-
-@keyframes floatUp {
-    0% { transform: translateY(0) scale(0.8); opacity: 1; }
-    100% { transform: translateY(-120vh) scale(1.5); opacity: 0; }
-}
-
-/* ===== FLOWER FLOAT ===== */
-.flower {
-    position: absolute;
-    width: 40px;
-    opacity: 0.85;
-    animation: drift 14s linear infinite;
-}
-
-@keyframes drift {
-    from { transform: translateY(110vh) rotate(0deg); }
-    to { transform: translateY(-120vh) rotate(360deg); }
-}
-
-/* ===== ANIMATION ===== */
-@keyframes pop {
-    from { transform: scale(0.7); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
-</style>
-</head>
-
-<body>
-
-<!-- ===== OPENING ===== -->
-<div class="card" id="opening">
-    <h1>Hello my Favourite person 💓</h1>
-    <p>
-        Before you read my special letter,<br>
-        you can try to tap.<br><br>
-        A heart will appear on your cellphone / laptop screen 😊💖
-    </p>
-</div>
-
-<button id="readBtn" class="hidden">Read 💌</button>
-
-<!-- ===== LETTER ===== -->
-<div class="card hidden" id="letter">
-    <h1>This is for you 💐</h1>
-
-    <img class="flower-img"
-         src="https://images.unsplash.com/photo-1526045478516-99145907023c"
-         alt="flower">
-
-    <p id="text"></p>
-</div>
-
-<script>
-let tapped = false;
-const readBtn = document.getElementById("readBtn");
-const opening = document.getElementById("opening");
-const letter = document.getElementById("letter");
-const textEl = document.getElementById("text");
-
-const message = [
-    "Yeah, just for you.",
-    "Why?",
-    "Because you're the only one in this world for me 💗",
-    "",
-    "Thanks for what you have done for me.",
-    "I hope you really understand my feelings after you saw this letter.",
-    "",
-    "I'm gonna work harder and become a better, more successful person.",
-    "Because my current dream is simple.",
-    "",
-    "I want to make you smile.",
-    "I want to make you happy.",
-    "And I want to spend my lifetime future with you 💖",
-    "",
-    "Terimakasih sudah membacanya sampai akhir.",
-    "Semoga kamu suka 💗💖"
-];
-
-let index = 0;
-
-document.body.addEventListener("click", (e) => {
-    createHeart(e.clientX, e.clientY);
-    if (!tapped) {
-        tapped = true;
-        readBtn.classList.remove("hidden");
-    }
-});
-
-readBtn.onclick = () => {
-    opening.classList.add("hidden");
-    readBtn.classList.add("hidden");
-    letter.classList.remove("hidden");
-    showText();
-};
-
-/* ===== TYPE EFFECT ===== */
-function showText() {
-    if (index >= message.length) return;
-
-    const line = message[index];
-    let char = 0;
-    const interval = setInterval(() => {
-        textEl.innerHTML += line.charAt(char);
-        char++;
-        if (char === line.length) {
-            clearInterval(interval);
-            textEl.innerHTML += "<br><br>";
-            index++;
-            setTimeout(showText, 800);
-        }
-    }, 35);
-}
-
-/* ===== HEART EFFECT ===== */
-function createHeart(x, y) {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerText = ["💗","💖","💘","💕"][Math.floor(Math.random()*4)];
-    heart.style.left = x + "px";
-    heart.style.top = y + "px";
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 6000);
-}
-
-/* ===== FLOATING FLOWERS ===== */
-setInterval(() => {
-    const flower = document.createElement("img");
+</html>eElement("img");
     flower.src = "https://images.unsplash.com/photo-1501004318641-b39e6451bec6";
     flower.className = "flower";
     flower.style.left = Math.random()*100 + "vw";

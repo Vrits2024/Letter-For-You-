@@ -1,40 +1,146 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <title>Just For You 💗</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Segoe UI', sans-serif;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Letter for You 💗</title>
+    <style>
+        :root {
+            --pink-soft: #ffc0cb;
+            --pink-deep: #ff69b4;
+            --text-color: #4a4a4a;
+        }
 
-    body {
-      margin: 0;
-      height: 100vh;
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      text-align: center;
-      color: #fff;
-    }
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: linear-gradient(135deg, #fff5f7 0%, #ffe4e1 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            cursor: pointer;
+            user-select: none;
+        }
 
-    .container {
-      background: rgba(255, 255, 255, 0.15);
-      padding: 25px;
-      border-radius: 20px;
-      backdrop-filter: blur(10px);
-      max-width: 90%;
-      width: 360px;
-      animation: fadeIn 1.2s ease;
-    }
+        #container {
+            text-align: center;
+            padding: 20px;
+            max-width: 80%;
+            z-index: 10;
+        }
 
-    h1 {
-      font-size: 1.4em;
-      margin-bottom: 15px;
+        #message {
+            font-size: 1.5rem;
+            color: var(--text-color);
+            line-height: 1.6;
+            transition: opacity 0.5s ease-in-out;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+            font-weight: 500;
+        }
+
+        .heart {
+            position: absolute;
+            pointer-events: none;
+            animation: fly 2s linear forwards;
+            font-size: 24px;
+            z-index: 5;
+        }
+
+        @keyframes fly {
+            0% { transform: translate(0, 0) scale(1); opacity: 1; }
+            100% { transform: translate(var(--xdiff), -200px) scale(1.5); opacity: 0; }
+        }
+
+        .instruction {
+            position: fixed;
+            bottom: 20px;
+            font-size: 0.8rem;
+            color: #b5b5b5;
+            animation: blink 2s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="container">
+        <p id="message">Tap anywhere to start... ✨</p>
+    </div>
+
+    <div class="instruction">Tap screen to continue</div>
+
+    <script>
+        const messages = [
+            "This is for you!",
+            "Yeah, just for you! 💗",
+            "Why? Because...",
+            "You're the only one in this world for me. ✨",
+            "Thanks for everything you've done for me.",
+            "I really hope you understand my feelings after you see this letter.",
+            "I'm gonna work hard and be a successful person...",
+            "So I can achieve my current dream.",
+            "Yes, my current dream is making you smile, making you happy...",
+            "And spend my lifetime with you! 💍",
+            "Terimakasih sudah membacanya sampai akhir, semoga kamu suka 💗💖"
+        ];
+
+        let currentIdx = -1;
+        const msgElement = document.getElementById('message');
+        const hearts = ['💗', '💖', '💝', '💕', '✨'];
+
+        document.addEventListener('mousedown', (e) => {
+            handleNext(e.clientX, e.clientY);
+        });
+
+        document.addEventListener('touchstart', (e) => {
+            handleNext(e.touches[0].clientX, e.touches[0].clientY);
+        });
+
+        function handleNext(x, y) {
+            // Update Message
+            currentIdx++;
+            if (currentIdx < messages.length) {
+                msgElement.style.opacity = 0;
+                setTimeout(() => {
+                    msgElement.innerText = messages[currentIdx];
+                    msgElement.style.opacity = 1;
+                }, 300);
+            }
+
+            // Create Hearts
+            for (let i = 0; i < 5; i++) {
+                createHeart(x, y);
+            }
+        }
+
+        function createHeart(x, y) {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+            heart.style.left = x + 'px';
+            heart.style.top = y + 'px';
+            
+            // Random horizontal movement
+            const xDiff = (Math.random() - 0.5) * 200;
+            heart.style.setProperty('--xdiff', `${xDiff}px`);
+            
+            document.body.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 2000);
+        }
+    </script>
+</body>
+</html>      margin-bottom: 15px;
     }
 
     p {

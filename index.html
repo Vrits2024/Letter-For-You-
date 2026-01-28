@@ -2,161 +2,144 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Just For You 💗</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 *{
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family: 'Segoe UI', 'Comic Sans MS', sans-serif;
+    font-family:'Segoe UI','Comic Sans MS',sans-serif;
 }
 
 body{
     height:100vh;
     overflow:hidden;
-    background: linear-gradient(135deg,#ffd6e8,#fceabb,#e0f7fa);
+    background:linear-gradient(135deg,#ffd6e8,#e8f6ff,#fff3d6);
     display:flex;
     justify-content:center;
     align-items:center;
     position:relative;
 }
 
-/* Floating hearts background */
-.bg-heart{
-    position:absolute;
-    font-size:18px;
-    opacity:0.4;
-    animation: float 10s linear infinite;
-}
-
-@keyframes float{
-    0%{ transform:translateY(110vh) scale(0.8); opacity:0 }
-    10%{ opacity:0.6 }
-    100%{ transform:translateY(-120vh) scale(1.5); opacity:0 }
-}
-
 /* Card */
 .card{
-    background: rgba(255,255,255,0.88);
-    padding:40px 30px;
-    border-radius:25px;
-    width:90%;
-    max-width:420px;
+    background:rgba(255,255,255,0.9);
+    padding:32px 26px;
+    border-radius:26px;
+    max-width:380px;
     text-align:center;
-    box-shadow:0 20px 45px rgba(0,0,0,0.15);
-    z-index:5;
-    animation: pop 1s ease;
+    box-shadow:0 25px 55px rgba(0,0,0,.15);
+    z-index:10;
+    animation:fadeUp 1.2s ease;
 }
 
-@keyframes pop{
-    from{ transform:scale(0.7); opacity:0 }
-    to{ transform:scale(1); opacity:1 }
+@keyframes fadeUp{
+    from{transform:translateY(40px);opacity:0}
+    to{transform:translateY(0);opacity:1}
 }
 
 h1{
+    font-size:24px;
     color:#ff5fa2;
-    font-size:26px;
-    margin-bottom:15px;
+    margin-bottom:16px;
 }
 
 p{
+    font-size:16px;
     color:#444;
-    font-size:17px;
-    line-height:1.6;
+    line-height:1.7;
+    min-height:220px;
 }
 
 /* Read Button */
 button{
-    margin-top:25px;
-    padding:12px 30px;
+    margin-top:18px;
+    padding:10px 26px;
     border:none;
     border-radius:30px;
-    background:linear-gradient(135deg,#ff5fa2,#ff8fc7);
-    color:white;
-    font-size:16px;
+    background:#ff5fa2;
+    color:#fff;
+    font-size:15px;
     cursor:pointer;
-    box-shadow:0 10px 25px rgba(255,95,162,0.4);
     display:none;
+    animation:pulse 1.4s infinite;
 }
 
-button:hover{
-    transform:scale(1.05);
+@keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(255,95,162,.6)}
+    70%{box-shadow:0 0 0 18px rgba(255,95,162,0)}
+    100%{box-shadow:0 0 0 0 rgba(255,95,162,0)}
 }
 
-/* Tap hearts */
-.tap-heart{
+/* Touch heart */
+.touch-heart{
     position:absolute;
-    font-size:24px;
-    animation: burst 1.2s ease forwards;
+    font-size:22px;
+    animation:heartPop 1.6s ease forwards;
     pointer-events:none;
 }
 
-@keyframes burst{
-    0%{ transform:scale(0.5); opacity:1 }
-    100%{ transform:translateY(-80px) scale(1.6); opacity:0 }
+@keyframes heartPop{
+    0%{transform:scale(.4);opacity:0}
+    30%{opacity:1}
+    100%{transform:scale(1.6) translateY(-80px);opacity:0}
 }
 
-/* Letter scene */
-#letter{
-    display:none;
+/* Floating bubble hearts */
+.bubble{
+    position:absolute;
+    font-size:20px;
+    opacity:.6;
+    animation:floatUp linear infinite;
 }
 
-.line{
-    opacity:0;
-    animation: fadeIn 1s ease forwards;
-    margin-bottom:15px;
-}
-
-@keyframes fadeIn{
-    to{ opacity:1 }
+@keyframes floatUp{
+    from{transform:translateY(110vh)}
+    to{transform:translateY(-120vh)}
 }
 </style>
 </head>
 
 <body>
 
-<!-- Opening Card -->
-<div class="card" id="intro">
-    <h1>Hello my Favourite Person 💓</h1>
-    <p>
+<div class="card">
+    <h1>💗 Hello</h1>
+    <p id="text">
+        Hello my favourite person 💓<br><br>
         Before you read my special letter,<br>
-        you can try to tap your screen.<br><br>
-        A heart will appear on your cellphone or laptop 😊💖
+        you can try to tap the screen.<br><br>
+        A heart will appear on your cellphone or laptop screen 😊💖
     </p>
     <button id="readBtn">Read 💌</button>
 </div>
 
-<!-- Letter Card -->
-<div class="card" id="letter">
-    <h1>This is for you 💗</h1>
-    <div id="text"></div>
-</div>
-
 <script>
-/* Floating background hearts */
-const bgHearts = ["💗","💖","💘","💕","💓"];
-setInterval(()=>{
-    const h=document.createElement("div");
-    h.className="bg-heart";
-    h.innerText=bgHearts[Math.floor(Math.random()*bgHearts.length)];
-    h.style.left=Math.random()*100+"vw";
-    h.style.animationDuration=(8+Math.random()*6)+"s";
-    document.body.appendChild(h);
-    setTimeout(()=>h.remove(),14000);
-},500);
+/* Bubble hearts background */
+const bubbles=["💗","💖","💕","💘"];
+function createBubble(){
+    const b=document.createElement("div");
+    b.className="bubble";
+    b.innerText=bubbles[Math.floor(Math.random()*bubbles.length)];
+    b.style.left=Math.random()*100+"vw";
+    b.style.animationDuration=(8+Math.random()*8)+"s";
+    b.style.fontSize=(16+Math.random()*16)+"px";
+    document.body.appendChild(b);
+    setTimeout(()=>b.remove(),16000);
+}
+setInterval(createBubble,700);
 
-/* Tap interaction */
+/* Tap heart logic */
 let tapped=false;
 document.addEventListener("click",(e)=>{
-    const heart=document.createElement("div");
-    heart.className="tap-heart";
-    heart.innerText=bgHearts[Math.floor(Math.random()*bgHearts.length)];
-    heart.style.left=e.clientX+"px";
-    heart.style.top=e.clientY+"px";
-    document.body.appendChild(heart);
-    setTimeout(()=>heart.remove(),1200);
+    const h=document.createElement("div");
+    h.className="touch-heart";
+    h.innerText="💗";
+    h.style.left=e.clientX+"px";
+    h.style.top=e.clientY+"px";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),1600);
 
     if(!tapped){
         tapped=true;
@@ -164,280 +147,51 @@ document.addEventListener("click",(e)=>{
     }
 });
 
-/* Letter content */
-const lines=[
-"This is for you. Yeah… just for you.",
-"Why?",
-"Because you’re the only one in this world for me 💗",
-"",
-"Thanks for everything you’ve done for me.",
-"I hope you truly understand my feelings after reading this letter.",
-"",
-"I’m going to work harder and become a better, more successful person.",
-"Because my current dream is simple.",
-"",
+/* Romantic letter */
+const messages=[
+"This is for you. Yes… just for you.",
+"Because among billions of people in this world, you are the one who holds my attention the most 💗",
+"Thank you… for everything you’ve done, even for the small things you might never realize.",
+"I hope after you read this, you can feel what I truly feel.",
+"I’m trying every day to become a better version of myself.",
+"Working harder. Growing stronger. Becoming more worthy.",
+"Because right now, my dream is very simple.",
 "I want to make you smile.",
-"I want to make you happy.",
-"And I want to spend my lifetime future with you.",
-"",
-"Terima kasih sudah membaca sampai akhir.",
-"Semoga kamu suka 💗💖"
+"I want to make you feel safe, calm, and happy.",
+"And if someday life allows…",
+"I want to spend my future, my lifetime, with you.",
+"Terima kasih sudah membaca sampai akhir. Semoga kamu menyukainya 💗💖"
 ];
+
+let i=0,j=0;
+const speed=38;
+const textEl=document.getElementById("text");
+
+function typeLetter(){
+    if(i<messages.length){
+        if(j<messages[i].length){
+            textEl.innerHTML+=messages[i].charAt(j);
+            j++;
+            setTimeout(typeLetter,speed);
+        }else{
+            textEl.innerHTML+="<br><br>";
+            i++;
+            j=0;
+            setTimeout(typeLetter,700);
+        }
+    }
+}
 
 document.getElementById("readBtn").onclick=()=>{
-    document.getElementById("intro").style.display="none";
-    document.getElementById("letter").style.display="block";
-
-    const text=document.getElementById("text");
-    lines.forEach((line,i)=>{
-        const p=document.createElement("p");
-        p.className="line";
-        p.style.animationDelay=(i*1.2)+"s";
-        p.innerText=line;
-        text.appendChild(p);
-    });
+    textEl.innerHTML="";
+    document.querySelector("h1").innerText="💌 Just For You";
+    document.getElementById("readBtn").style.display="none";
+    typeLetter();
 };
 </script>
 
 </body>
-</html>    to{transform:scale(1);opacity:1;}
-}
-
-h1{
-    color:#ff5fa2;
-    margin-bottom:15px;
-    font-size:26px;
-}
-
-p{
-    color:#555;
-    font-size:17px;
-    line-height:1.6;
-}
-
-/* Read button */
-button{
-    margin-top:20px;
-    padding:12px 28px;
-    border:none;
-    border-radius:30px;
-    background:#ff5fa2;
-    color:white;
-    font-size:16px;
-    cursor:pointer;
-    display:none;
-    box-shadow:0 10px 20px rgba(255,95,162,0.4);
-}
-
-button:hover{
-    background:#ff3f8e;
-}
-
-/* Tap hearts */
-.tap-heart{
-    position:absolute;
-    width:18px;
-    height:18px;
-    background:#ff5fa2;
-    transform:rotate(45deg);
-    animation:tapFloat 1.2s ease forwards;
-}
-
-.tap-heart::before,
-.tap-heart::after{
-    content:'';
-    position:absolute;
-    width:18px;
-    height:18px;
-    background:inherit;
-    border-radius:50%;
-}
-
-.tap-heart::before{top:-9px;}
-.tap-heart::after{left:-9px;}
-
-@keyframes tapFloat{
-    0%{transform:scale(0.5) rotate(45deg);opacity:1;}
-    100%{transform:translateY(-80px) scale(1.5) rotate(45deg);opacity:0;}
-}
-</style>
-</head>
-
-<body>
-
-<div class="card" id="intro">
-    <h1>Hello my favourite person 💓</h1>
-    <p>
-        Before you read my special letter,<br>
-        you can try to tap.<br><br>
-        A heart will appear on your cellphone / laptop screen 😊💖
-    </p>
-    <button id="readBtn">Read 💌</button>
-</div>
-
-<div class="card" id="letter" style="display:none;">
-    <h1>This is for you 💗</h1>
-    <p id="text"></p>
-</div>
-
-<script>
-/* Background hearts */
-function createBgHeart(){
-    const h=document.createElement('div');
-    h.className='bg-heart';
-    h.style.left=Math.random()*100+'vw';
-    h.style.animationDuration=(8+Math.random()*6)+'s';
-    h.style.width=h.style.height=(14+Math.random()*14)+'px';
-    document.body.appendChild(h);
-    setTimeout(()=>h.remove(),15000);
-}
-setInterval(createBgHeart,500);
-
-/* Tap heart interaction */
-let tapped=false;
-document.addEventListener('click',(e)=>{
-    const heart=document.createElement('div');
-    heart.className='tap-heart';
-    heart.style.left=e.clientX+'px';
-    heart.style.top=e.clientY+'px';
-    document.body.appendChild(heart);
-    setTimeout(()=>heart.remove(),1200);
-
-    if(!tapped){
-        tapped=true;
-        document.getElementById('readBtn').style.display='inline-block';
-    }
-});
-
-/* Letter typing effect */
-const sentences=[
-"This is for you. Yeah, just for you.",
-"Why?",
-"Because you're the only one in this world for me 💗",
-"",
-"Thanks for what you have done for me.",
-"I hope you really understand my feelings after you saw this letter.",
-"",
-"I'm gonna work harder and become a better, successful person.",
-"Because my current dream is simple.",
-"I want to make you smile.",
-"I want to make you happy.",
-"And I want to spend my lifetime future with you.",
-"",
-"Terimakasih sudah membacanya sampai akhir.",
-"Semoga kamu suka 💗💖"
-];
-
-let index=0,char=0;
-const textEl=document.getElementById('text');
-
-function typeSentence(){
-    if(index>=sentences.length) return;
-    if(char<sentences[index].length){
-        textEl.innerHTML+=sentences[index].charAt(char);
-        char++;
-        setTimeout(typeSentence,45);
-    }else{
-        textEl.innerHTML+='<br><br>';
-        index++;
-        char=0;
-        setTimeout(typeSentence,600);
-    }
-}
-
-document.getElementById('readBtn').onclick=()=>{
-    document.getElementById('intro').style.display='none';
-    document.getElementById('letter').style.display='block';
-    typeSentence();
-};
-</script>
-
-</body>
-</html>.bubble-heart {
-    position: absolute;
-    bottom: -40px;
-    font-size: 22px;
-    opacity: 0.85;
-    animation: floatUp linear forwards;
-    pointer-events: none;
-}
-
-@keyframes floatUp {
-    from {
-        transform: translateY(0) scale(0.8);
-        opacity: 0;
-    }
-    10% { opacity: 1; }
-    to {
-        transform: translateY(-120vh) scale(1.6);
-        opacity: 0;
-    }
-}
-
-/* ===== TAP HEART ===== */
-.tap-heart {
-    position: absolute;
-    font-size: 28px;
-    animation: tapPop 1.2s ease forwards;
-    pointer-events: none;
-}
-
-@keyframes tapPop {
-    0% { transform: scale(0.3); opacity: 1; }
-    100% { transform: scale(1.8) translateY(-80px); opacity: 0; }
-}
-
-/* ===== ANIMATION ===== */
-@keyframes pop {
-    from { transform: scale(0.7); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
-</style>
-</head>
-
-<body>
-
-<!-- OPENING -->
-<div class="card" id="opening">
-    <h1>Hello my Favourite person 💓</h1>
-    <p>
-        Before you read my special letter,<br>
-        you can try to tap.<br><br>
-        A heart will appear on your screen 😊💖
-    </p>
-</div>
-
-<button id="readBtn" class="hidden">Read 💌</button>
-
-<!-- LETTER -->
-<div class="card hidden" id="letter">
-    <h1>This is for you 💗</h1>
-    <p id="text"></p>
-</div>
-
-<script>
-let tapped = false;
-const readBtn = document.getElementById("readBtn");
-const opening = document.getElementById("opening");
-const letter = document.getElementById("letter");
-const textEl = document.getElementById("text");
-
-const hearts = ["💗","💖","💘","💕","💞","💓"];
-
-const message = [
-    "Yeah, just for you.",
-    "Why?",
-    "Because you're the only one in this world for me 💗",
-    "",
-    "Thanks for what you have done for me.",
-    "I hope you really understand my feelings after you saw this letter.",
-    "",
-    "I'm gonna work hard and become a better person.",
-    "Because my current dream is simple.",
-    "",
-    "I want to make you smile.",
-    "I want to make you happy.",
-    "And I want to spend my lifetime future with you 💖",
+</html>you 💖",
     "",
     "Terimakasih sudah membacanya sampai akhir.",
     "Semoga kamu suka 💗💖"

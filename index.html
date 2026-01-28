@@ -1,72 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Just For You 💗</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <title>Just For You 💗</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
 
-<style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Comic Sans MS', 'Segoe UI', sans-serif;
-}
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      text-align: center;
+      color: #fff;
+    }
 
-body {
-    height: 100vh;
-    overflow: hidden;
-    background: linear-gradient(135deg, #ffd6e8, #e0f7fa, #fff1c1);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    .container {
+      background: rgba(255, 255, 255, 0.15);
+      padding: 25px;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      max-width: 90%;
+      width: 360px;
+      animation: fadeIn 1.2s ease;
+    }
 
-/* Card */
-.card {
-    background: rgba(255,255,255,0.9);
-    padding: 35px;
-    border-radius: 25px;
-    text-align: center;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
-    z-index: 10;
-    max-width: 340px;
-    animation: pop 1s ease;
-}
+    h1 {
+      font-size: 1.4em;
+      margin-bottom: 15px;
+    }
 
-h1 {
-    color: #ff5fa2;
-    margin-bottom: 15px;
-}
+    p {
+      font-size: 0.95em;
+      line-height: 1.6;
+      display: none;
+      animation: fadeIn 1s ease;
+    }
 
-p {
-    font-size: 17px;
-    color: #444;
-    line-height: 1.6;
-}
+    button {
+      margin-top: 15px;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 25px;
+      background: #ff4f81;
+      color: white;
+      font-size: 0.9em;
+      cursor: pointer;
+      transition: 0.3s;
+    }
 
-button {
-    margin-top: 20px;
-    padding: 12px 25px;
-    border: none;
-    border-radius: 30px;
-    background: #ff5fa2;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    box-shadow: 0 8px 20px rgba(255,95,162,0.4);
-}
+    button:hover {
+      transform: scale(1.05);
+      background: #ff2f6d;
+    }
 
-button:hover {
-    transform: scale(1.05);
-}
+    .heart {
+      position: absolute;
+      color: #ff4f81;
+      font-size: 20px;
+      animation: float 2s ease-out forwards;
+      pointer-events: none;
+    }
 
-/* Floating hearts */
-.heart {
-    position: absolute;
-    font-size: 22px;
-    animation: floatUp 6s linear forwards;
-    pointer-events: none;
+    @keyframes float {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-120px) scale(1.5);
+        opacity: 0;
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    footer {
+      margin-top: 15px;
+      font-size: 0.75em;
+      opacity: 0.85;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Hello my favourite person 😊💖</h1>
+
+    <p id="letter">
+      This is for you — yes, only for you.  
+      Not because I was bored, not because I had free time,  
+      but because in my world… you’re someone special 💗  
+      <br><br>
+      Thank you for everything you’ve done for me, even the small things you might not realize.  
+      I hope after reading this, you’ll understand how sincere my feelings are.  
+      <br><br>
+      I’m working hard to become a better and more successful person —  
+      because right now, my dream is simple:  
+      to see you smile, to make you happy,  
+      and to spend my future growing together with you 💖  
+      <br><br>
+      Terimakasih sudah membaca sampai akhir.  
+      I really hope this makes your heart feel a little warmer 💗
+    </p>
+
+    <button id="openBtn">Tap to open the letter ✉️</button>
+
+    <footer>Tap anywhere on the screen 💗</footer>
+  </div>
+
+  <script>
+    const btn = document.getElementById("openBtn");
+    const letter = document.getElementById("letter");
+
+    btn.addEventListener("click", () => {
+      letter.style.display = "block";
+      btn.style.display = "none";
+    });
+
+    document.addEventListener("click", (e) => {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.innerHTML = "💗";
+      heart.style.left = e.clientX + "px";
+      heart.style.top = e.clientY + "px";
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 2000);
+    });
+  </script>
+
+</body>
+</html>    pointer-events: none;
 }
 
 @keyframes floatUp {
